@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button
+      class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      onclick="openPopup()"
+    >
+      Bid Now
+    </button>
+
+    <div id="popup" class="fixed z-10 inset-0 overflow-y-auto hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div
+          class="max-w-lg mx-auto px-10 py-8 my-10 shadow-xl bg-white rounded-lg"
+        >
+          <div class="flex items-center justify-center text-green-600 mb-4">
+            <div
+              class="rounded-full h-16 w-16 flex items-center justify-center border-2 border-green-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-10 w-10 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+          </div>
+          <p class="text-gray-600 mb-6 text-center">
+            Your bid has been placed successfully.
+          </p>
+          <div class="text-center mb-4">
+            <span class="font-semibold">Bid Number:</span>
+            <span class="font-bold text-xl">#12345</span>
+          </div>
+          <div
+            class="bg-white rounded-lg p-6 max-w-md mx-auto flex items-center"
+          >
+            <div class="flex flex-col">
+              <div class="flex justify-between items-center mb-2">
+                <img
+                  src="https://rukminim1.flixcart.com/image/416/416/xif0q/gamingconsole/5/n/u/-original-imaghyykrhvewh4y.jpeg?q=70"
+                  alt="Product Image"
+                  class="object-scale-down h-32 w-48 mr-4"
+                />
+                <div>
+                  <h2 class="text-2xl font-bold mb-2">PlayStation 5</h2>
+                  <p class="text-gray-600 mb-2">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Fusce auctor, velit a lacinia tincidunt.
+                  </p>
+                </div>
+              </div>
+              <button
+                class="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 self-end w-full"
+                onclick="closePopup()"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openPopup() {
+        document.getElementById("popup").classList.remove("hidden");
+      }
+      function closePopup() {
+        document.getElementById("popup").classList.add("hidden");
+      }
+    </script>
+  </body>
+</html>
