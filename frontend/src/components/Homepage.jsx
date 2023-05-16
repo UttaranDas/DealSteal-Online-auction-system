@@ -36,7 +36,8 @@ const Homepage = () => {
                 alt={product.alt}
                 description={product.description}
                 currentBid={product.currentBid}
-                endTime={product.endTIme}
+                endTime={product.endTime}
+                status={product.status}
                 key={index}
               />
             })}

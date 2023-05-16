@@ -16,7 +16,6 @@ const server = createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 const ObjectId = mongoose.Types.ObjectId;
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
@@ -86,6 +85,31 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
+app.patch("/product/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const product = await Products.findById(id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    const { status } = req.body;
+    if (status === "Inactive") {
+      console.log(id, status, product.name);
+      product.status = "Inactive";
+      await product.save();
+    } else {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    res.json({ message: "Product status updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // Define route for adding a product
 app.post("/products", upload.single("img"), async (req, res) => {
   console.log("first");
@@ -95,7 +119,7 @@ app.post("/products", upload.single("img"), async (req, res) => {
     // Generate link to image file
     const imageLink = req.file ? `/images/${req.file.filename}` : null;
 
-    const seller = await Users.find({uid: req.body.uid});
+    const seller = await Users.findOne({ uid: req.body.uid });
     const sellerId = new ObjectId(seller._id);
 
     const newProduct = new Products({
@@ -106,7 +130,7 @@ app.post("/products", upload.single("img"), async (req, res) => {
       currentBid: req.body.startingBidPrice,
       seller: sellerId,
       endTime: req.body.endTime,
-      status: "Active"
+      status: "Active",
     });
     await newProduct.save();
     res.status(201).json({ message: "Product added successfully" });
@@ -117,14 +141,16 @@ app.post("/products", upload.single("img"), async (req, res) => {
 });
 
 // handling search requests
-app.get('/products/search', async (req, res) => {
+app.get("/products/search", async (req, res) => {
   try {
     const searchQuery = req.query.query;
-    const products = await Products.find({ name: { $regex: searchQuery, $options: 'i' } }).limit(15);
+    const products = await Products.find({
+      name: { $regex: searchQuery, $options: "i" },
+    }).limit(15);
     res.json(products);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -149,7 +175,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.get('/mybid/:id', async (req, res) => {
+app.get("/mybid/:id", async (req, res) => {
   const uid = req.params.id;
   console.log(`accessed product/${uid}`);
   try {
@@ -185,7 +211,7 @@ io.on("connection", (socket) => {
     // Listen for new bid from clients
     const product = await Products.findById(bidId);
     const productId = new ObjectId(product._id);
-    const bidder = await Users.find({uid: uid});
+    const bidder = await Users.find({ uid: uid });
     const bidderId = new ObjectId(bidder[0]._id);
 
     let currentBid = product.currentBid;
@@ -193,13 +219,13 @@ io.on("connection", (socket) => {
       currentBid = bid;
       product.currentBid = currentBid;
       product.bids.push({ bidder: bidderId, bidAmount: currentBid });
-      await product.save(); 
-      
-      bidder[0].bid.push({item: productId, amount: currentBid});
-      
+      await product.save();
+
+      bidder[0].bid.push({ item: productId, amount: currentBid });
+
       await bidder[0].save();
       console.log(`new bid set to ${currentBid}`);
-      io.emit("currentBid", {"newBid":currentBid, "itemId": bidId});
+      io.emit("currentBid", { newBid: currentBid, itemId: bidId });
     }
-});
+  });
 });

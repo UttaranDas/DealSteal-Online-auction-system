@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const ProductCard = (props) => {
   const [timeLeft, setTimeLeft] = useState("00:00:00");
+  const [statusClass, setStatusClass] = useState("");
 
   useEffect(() => {
     // Calculate time left from end time
     const calculateTimeLeft = () => {
       // Get the end time from props or use a predefined value
-      const endTime = props.endTime || "2023-04-30T00:00:00.000Z"; // Replace with your actual end time
+      const endTime = props.endTime;
       const now = new Date().getTime();
       const difference = new Date(endTime) - now;
+      
+      // console.log(props.id, props.status, difference, props.name);
 
-      if (difference <= 0) {
+      if (difference <= 0 && props.status == "Active") {
         // Timer has expired
-        setTimeLeft("00:00:00");
-      } else {
+        setTimeLeft("Inactive");
+
+        axios
+          .patch(`http://localhost:3000/product/${props.id}`, {
+            status: "Inactive",
+          })
+          .then((response) => {
+            console.log("Product status updated to Inactive");
+          })
+          .catch((error) => {
+            console.error("Failed to update product status:", error);
+          });
+      } else if (props.status === "Active") {
         // Calculate hours, minutes, and seconds
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
@@ -31,6 +46,8 @@ const ProductCard = (props) => {
             .toString()
             .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
         );
+      } else {
+        setTimeLeft("Inactive");
       }
     };
 
@@ -46,10 +63,14 @@ const ProductCard = (props) => {
     };
   }, [props.endTime]);
 
+  useEffect(() => {
+    setStatusClass(timeLeft === "Inactive" ? "bg-red-500 text-white" : "bg-white text-black");
+  }, [timeLeft]);
+
   return (
     <Link to={`/product/${props.id}`}>
       <div className="relative overflow-hidden rounded-lg shadow-lg w-100 h-100">
-        <div className="absolute top-1 right-2 text-xl font-bold text-black bg-white rounded-full p-2 border border-gray-400">
+        <div className={`absolute top-1 right-2 text-xl font-bold rounded-full p-2 border border-gray-400 ${statusClass}`}>
           {timeLeft}
         </div>
         <img
