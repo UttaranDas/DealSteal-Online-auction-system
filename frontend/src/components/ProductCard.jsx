@@ -31,21 +31,28 @@ const ProductCard = (props) => {
             console.error("Failed to update product status:", error);
           });
       } else if (props.status === "Active") {
-        // Calculate hours, minutes, and seconds
-        const hours = Math.floor(
-          (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (difference % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        // Convert difference to weeks, days, hours, minutes, and seconds
+        const weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+        const days = Math.floor((difference % (1000 * 60 * 60 * 24 * 7)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-        // Format time left as "hh:mm:ss"
+        // Format time left as "ww:dd:hh:mm:ss"
         setTimeLeft(
-          `${hours.toString().padStart(2, "0")}:${minutes
-            .toString()
-            .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+          `${weeks.toString().padStart(2, "0")}:${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
         );
+        if(weeks){
+          setTimeLeft(`${weeks.toString().padStart(2, "0")}w ${days.toString().padStart(2, "0")}d`);
+        } else if(days){
+          setTimeLeft(`${days.toString().padStart(2, "0")}d ${hours.toString().padStart(2, "0")}h`);
+        } else if(hours){
+          setTimeLeft(`${hours.toString().padStart(2, "0")}h ${minutes.toString().padStart(2, "0")}m`);
+        } else if(minutes){
+          setTimeLeft(`${minutes.toString().padStart(2, "0")}m ${seconds.toString().padStart(2, "0")}s`);
+        } else{
+          setTimeLeft(`${seconds.toString().padStart(2, "0")}s`);
+        }
       } else {
         setTimeLeft("Inactive");
       }

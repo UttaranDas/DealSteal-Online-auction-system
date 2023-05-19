@@ -3,12 +3,12 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC8fwVcnQ8UU1eneLFpzseqfj3e_TpzAck",
-  authDomain: "online-auction-system-b0dc5.firebaseapp.com",
-  projectId: "online-auction-system-b0dc5",
-  storageBucket: "online-auction-system-b0dc5.appspot.com",
-  messagingSenderId: "77490244258",
-  appId: "1:77490244258:web:1f982fa5673418ed0fe5fb"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID
 };
 initializeApp(firebaseConfig);
 
