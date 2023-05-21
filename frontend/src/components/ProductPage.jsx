@@ -6,7 +6,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-const socket = io("http://localhost:3000/");
+const socket = io("http://dealsteal.ap-south-1.elasticbeanstalk.com/");
 
 export const ProductPage = () => {
   const { id } = useParams();
