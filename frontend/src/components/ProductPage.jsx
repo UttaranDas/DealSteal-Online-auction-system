@@ -21,7 +21,7 @@ export const ProductPage = () => {
   const bidInputRef = useRef(null);
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/product/${id}`)
+      .get(`http://dealsteal.ap-south-1.elasticbeanstalk.com/product/${id}`)
       .then((response) => {
         setProduct(response.data);
         setBidPrice(response.data.currentBid);

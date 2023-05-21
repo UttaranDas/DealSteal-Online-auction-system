@@ -34,7 +34,7 @@ const SignUp = () => {
       };
       console.log(user);
       await axios
-        .post("http://localhost:3000/signup", user)
+        .post("http://dealsteal.ap-south-1.elasticbeanstalk.com/signup", user)
         .then(console.log("sent user cred"));
       // await createUserWithEmailAndPassword(getAuth(), email, password);
       console.log("whatever2");

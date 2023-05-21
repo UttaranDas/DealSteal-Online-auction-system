@@ -14,7 +14,7 @@ const Homepage = () => {
 
   useEffect(() => {
     // Fetch data from server when component mounts
-    axios.get('http://localhost:3000/').then((response) => {
+    axios.get('http://dealsteal.ap-south-1.elasticbeanstalk.com/').then((response) => {
       // Update state with retrieved data
       setProducts(response.data);
     }).catch((error) => {

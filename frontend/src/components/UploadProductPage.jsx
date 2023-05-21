@@ -12,7 +12,7 @@ const addProduct = async (productData) => {
     },
   };
   try {
-    await axios.post("http://localhost:3000/products", productData, config);
+    await axios.post("http://dealsteal.ap-south-1.elasticbeanstalk.com/products", productData, config);
     console.log("Product added successfully");
   } catch (error) {
     console.error(error);

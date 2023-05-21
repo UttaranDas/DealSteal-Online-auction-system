@@ -21,6 +21,8 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const PORT = process.env.PORT || 8000;
+
 // Set up server
 const credentials = JSON.parse(fs.readFileSync("./credentials.json"));
 admin.initializeApp({
@@ -43,8 +45,8 @@ async function createUserWithEmailAndPassword(auth, email, password) {
 
 // Start server
 connectDB(() =>
-  server.listen(3000, () => {
-    console.log("Server started on port 3000");
+  server.listen(PORT, () => {
+    console.log(`Server started on port ${3000}`);
   })
 );
 
