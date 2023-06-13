@@ -6,7 +6,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
 
-const socket = io("http://dealsteal.ap-south-1.elasticbeanstalk.com/");
+const socket = io(import.meta.env.VITE_LINK);
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -21,7 +21,7 @@ export const ProductPage = () => {
   const bidInputRef = useRef(null);
   useEffect(() => {
     axios
-      .get(`http://dealsteal.ap-south-1.elasticbeanstalk.com/product/${id}`)
+      .get(import.meta.env.VITE_LINK + `product/${id}`)
       .then((response) => {
         setProduct(response.data);
         setBidPrice(response.data.currentBid);

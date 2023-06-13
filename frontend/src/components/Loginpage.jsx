@@ -81,6 +81,10 @@ const Loginpage = () => {
               Login
             </button>
           </form>
+          <p className="text-gray-400 text-sm mt-2 flex justify-between italic font-semibold">
+            <span>Demo email: demo@gmail.com </span>
+            <span>Demo password: demodemo</span>
+          </p>
           <hr className="my-6 border-gray-400" />
           <p className="text-gray-800 font-semibold">
             Don't have an account yet?{" "}

@@ -12,7 +12,7 @@ const Search = () => {
     if (inputValue.length > 0) {
       console.log("working.....");
       await axios
-        .get(`http://dealsteal.ap-south-1.elasticbeanstalk.com/products/search?query=${inputValue}`)
+        .get(import.meta.env.VITE_LINK + `products/search?query=${inputValue}`)
         .then((res) => {
           console.log(res.data);
           setSuggestions(res.data);

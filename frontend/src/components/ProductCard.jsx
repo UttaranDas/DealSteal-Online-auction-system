@@ -21,7 +21,7 @@ const ProductCard = (props) => {
         setTimeLeft("Inactive");
 
         axios
-          .patch(`http://dealsteal.ap-south-1.elasticbeanstalk.com/product/${props.id}`, {
+          .patch(import.meta.env.VITE_LINK + `product/${props.id}`, {
             status: "Inactive",
           })
           .then((response) => {

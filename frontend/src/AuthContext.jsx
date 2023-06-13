@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -8,7 +8,8 @@ const firebaseConfig = {
   projectId: import.meta.env.VITE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_ID
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: import.meta.env.VITE_MEASUREMENT_ID
 };
 initializeApp(firebaseConfig);
 
@@ -26,9 +27,20 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const signup = async(email, password) => {
+    console.log("accessed authcontext signup");
+    const result = await createUserWithEmailAndPassword(getAuth(), email, password);
+    console.log("signed up authcontext", result.user, result.user.uid);
+    return result.user.uid;
+    // setUser(result.user);
+    // setUid(result.user.uid);
+    // Save user state to LocalStorage
+    // localStorage.setItem('user', JSON.stringify(result.user));
+  }
+
   // Function to handle login
   const login = async (email, password) => {
-    console.log("accessed authccontext login");
+    console.log("accessed authcontext login");
     const result = await signInWithEmailAndPassword(getAuth(), email, password);
     console.log("logged in authcontext");
     setUser(result.user);
@@ -46,7 +58,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, uid, setUid }}>
+    <AuthContext.Provider value={{ user, login, logout, signup, uid, setUid }}>
       {children}
     </AuthContext.Provider>
   );

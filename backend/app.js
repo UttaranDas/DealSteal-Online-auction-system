@@ -1,13 +1,11 @@
 // Import required modules
-import fs from "fs";
-import admin from "firebase-admin";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import "dotenv/config";
 import multer from "multer";
-import { connectDB, Users, Products, conn } from "./db.js";
+import { connectDB, Users, Products } from "./db.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
@@ -23,30 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 8000;
 
-// Set up server
-const credentials = JSON.parse(fs.readFileSync("./credentials.json"));
-admin.initializeApp({
-  credential: admin.credential.cert(credentials),
-});
-async function createUserWithEmailAndPassword(auth, email, password) {
-  try {
-    const userRecord = await admin.auth().createUser({
-      email: email,
-      password: password,
-    });
-
-    console.log("User created successfully:", userRecord.uid);
-    return userRecord;
-  } catch (error) {
-    console.error("Error creating new user:", error);
-    throw error;
-  }
-}
-
 // Start server
 connectDB(() =>
   server.listen(PORT, () => {
-    console.log(`Server started on port ${3000}`);
+    console.log(`Server started on port ${PORT}`);
   })
 );
 
@@ -159,15 +137,9 @@ app.get("/products/search", async (req, res) => {
 // signup new users
 app.post("/signup", async (req, res) => {
   console.log("accessed some signup");
-  const { email, password, name, address, mobile } = req.body;
+  const { uid, email, password, name, address, mobile } = req.body;
   try {
     console.log("accessed signup", req.body);
-    const userRecord = await createUserWithEmailAndPassword(
-      admin.auth(),
-      email,
-      password
-    );
-    const uid = userRecord.uid;
     const newUser = new Users({ uid, email, name, address, mobile });
     await newUser.save();
     res.json({ message: "User added successfully" });

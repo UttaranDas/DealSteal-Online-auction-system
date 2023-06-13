@@ -11,7 +11,7 @@ const MyBids = () => {
 
   useEffect(() => {
     document.title = "My Bids";
-    axios.get(`http://dealsteal.ap-south-1.elasticbeanstalk.com/mybid/${uid}`).then((response) => {
+    axios.get(import.meta.env.VITE_LINK + `mybid/${uid}`).then((response) => {
       setBids(response.data);
     })
   }, []);

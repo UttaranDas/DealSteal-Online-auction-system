@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import Navbar from "./Navbar";
 import axios from "axios";
 import Footer from "./Footer";
+import { AuthContext } from "../AuthContext";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -13,6 +14,7 @@ const SignUp = () => {
   const [error, setError] = useState("");
   const [address, setAddress] = useState("");
   const [mobile, setMobile] = useState("");
+  const { signup } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -25,18 +27,19 @@ const SignUp = () => {
       }
       console.log("whatever");
       // console.log(email, password);
+      const uid = await signup(email, password);
+      console.log("the uid i got:", uid);
       const user = {
+        uid: uid,
         name: name,
         email: email,
-        password: password,
         address: address,
-        mobile: mobile
+        mobile: mobile,
       };
-      console.log(user);
+      console.log(user, password);
       await axios
-        .post("http://dealsteal.ap-south-1.elasticbeanstalk.com/signup", user)
+        .post(import.meta.env.VITE_LINK + "signup", user)
         .then(console.log("sent user cred"));
-      // await createUserWithEmailAndPassword(getAuth(), email, password);
       console.log("whatever2");
       navigate("/login");
     } catch (e) {
