@@ -17,7 +17,7 @@ const Homepage = () => {
     // Fetch data from server when component mounts
     const fetchData = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_LINK);
+        const response = await axios.get('dealsteal/');
         // Update state with retrieved data
         setProducts(response.data);
         setLoading(false);

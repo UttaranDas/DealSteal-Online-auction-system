@@ -38,7 +38,7 @@ const SignUp = () => {
       };
       console.log(user, password);
       await axios
-        .post(import.meta.env.VITE_LINK + "signup", user)
+        .post("dealsteal/signup", user)
         .then(console.log("sent user cred"));
       console.log("whatever2");
       navigate("/login");

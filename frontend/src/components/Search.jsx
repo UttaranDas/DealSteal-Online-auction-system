@@ -13,7 +13,7 @@ const Search = () => {
     if (inputValue.length > 0) {
       console.log("working.....");
       await axios
-        .get(import.meta.env.VITE_LINK + `products/search?query=${inputValue}`)
+        .get(`dealsteal/products/search?query=${inputValue}`)
         .then((res) => {
           console.log(res.data);
           setSuggestions(res.data);
@@ -54,7 +54,7 @@ const Search = () => {
           className="bg-white flex flex-col border p-2 rounded-xl mt-4"
         >
           {suggestions.map((product, key) => (
-            <Link to={`/product/${product._id}`}>
+            <Link to={`dealsteal/product/${product._id}`}>
             <li
               className="hover:bg-black hover:text-white p-2 rounded-xl"
               key={key}

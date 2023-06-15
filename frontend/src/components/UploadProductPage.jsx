@@ -12,7 +12,7 @@ const addProduct = async (productData) => {
     },
   };
   try {
-    await axios.post(import.meta.env.VITE_LINK + "products", productData, config);
+    await axios.post("dealsteal/products", productData, config);
     console.log("Product added successfully");
   } catch (error) {
     console.error(error);

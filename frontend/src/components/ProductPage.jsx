@@ -7,7 +7,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { Link } from "react-router-dom";
 
-const socket = io(import.meta.env.VITE_LINK);
+const socket = io('dealsteal');
 
 export const ProductPage = () => {
   const { id } = useParams();
