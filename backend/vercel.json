@@ -1,15 +1,3 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "app.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/dealsteal/(.*)",
-            "dest": "/"
-        }
-    ]
+  "rewrites": [{ "source": "/api/(.*)", "destination": "/api" }]
 }
