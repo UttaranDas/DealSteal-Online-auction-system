@@ -1,5 +1,6 @@
 // Import required modules
 import express from "express";
+import path from "path";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
@@ -8,7 +9,10 @@ import multer from "multer";
 import { connectDB, Users, Products } from "./db.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
@@ -16,8 +20,12 @@ const ObjectId = mongoose.Types.ObjectId;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get(/^(?!\/dealsteal).+/, (req, res) => {
+  res.sendFile(path.join(__dirname, '../backend/dist/index.html'));
+});
 
 const PORT = process.env.PORT || 8000;
 
@@ -41,7 +49,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.get("/", async (req, res) => {
+app.get("/dealsteal/", async (req, res) => {
   console.log("accessed");
   try {
     // random set of 50 products
@@ -53,7 +61,7 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.get("/product/:id", async (req, res) => {
+app.get("/dealsteal/product/:id", async (req, res) => {
   const id = req.params.id;
   console.log(`accessed product/${id}`);
   try {
@@ -65,7 +73,7 @@ app.get("/product/:id", async (req, res) => {
   }
 });
 
-app.patch("/product/:id", async (req, res) => {
+app.patch("/dealsteal/product/:id", async (req, res) => {
   const id = req.params.id;
 
   try {
@@ -91,7 +99,7 @@ app.patch("/product/:id", async (req, res) => {
 });
 
 // Define route for adding a product
-app.post("/products", upload.single("img"), async (req, res) => {
+app.post("/dealsteal/products", upload.single("img"), async (req, res) => {
   console.log("first");
   try {
     console.log("Accessed:", req.body);
@@ -121,7 +129,7 @@ app.post("/products", upload.single("img"), async (req, res) => {
 });
 
 // handling search requests
-app.get("/products/search", async (req, res) => {
+app.get("/dealsteal/products/search", async (req, res) => {
   try {
     const searchQuery = req.query.query;
     const products = await Products.find({
@@ -135,7 +143,7 @@ app.get("/products/search", async (req, res) => {
 });
 
 // signup new users
-app.post("/signup", async (req, res) => {
+app.post("/dealsteal/signup", async (req, res) => {
   console.log("accessed some signup");
   const { uid, email, password, name, address, mobile } = req.body;
   try {
@@ -149,7 +157,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.get("/mybid/:id", async (req, res) => {
+app.get("/dealsteal/mybid/:id", async (req, res) => {
   const uid = req.params.id;
   console.log(`accessed product/${uid}`);
   try {

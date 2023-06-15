@@ -11,16 +11,35 @@ const Homepage = () => {
   }, []);
 
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Fetch data from server when component mounts
-    axios.get(import.meta.env.VITE_LINK).then((response) => {
-      // Update state with retrieved data
-      setProducts(response.data);
-    }).catch((error) => {
-      console.error(error);
-    });
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(import.meta.env.VITE_LINK);
+        // Update state with retrieved data
+        setProducts(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    // Check for products every second until at least one product is displayed
+    if (loading) {
+      const interval = setInterval(() => {
+        if (products.length > 0) {
+          clearInterval(interval);
+          setLoading(false);
+        }
+      }, 1000);
+    }
+  }, [loading, products]);
 
   return (
     <>

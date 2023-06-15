@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Search = () => {
@@ -53,12 +54,14 @@ const Search = () => {
           className="bg-white flex flex-col border p-2 rounded-xl mt-4"
         >
           {suggestions.map((product, key) => (
+            <Link to={`/product/${product._id}`}>
             <li
               className="hover:bg-black hover:text-white p-2 rounded-xl"
               key={key}
             >
               {product.name}
             </li>
+            </Link>
           ))}
         </ul>
       )}

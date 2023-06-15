@@ -5,12 +5,13 @@ import BidAffirmation from "./BidAffirmation";
 import io from "socket.io-client";
 import axios from "axios";
 import { AuthContext } from "../AuthContext";
+import { Link } from "react-router-dom";
 
 const socket = io(import.meta.env.VITE_LINK);
 
 export const ProductPage = () => {
   const { id } = useParams();
-  const { uid } = useContext(AuthContext);
+  const { uid, user } = useContext(AuthContext);
 
   const [product, setProduct] = useState();
   const [bidPrice, setBidPrice] = useState(0);
@@ -41,7 +42,6 @@ export const ProductPage = () => {
       const date = new Date().toISOString();
       console.log(endTime, now, date);
       const difference = Math.abs(new Date(endTime) - now);
-     
 
       if (difference <= 0) {
         setTimeLeft("00:00:00");
@@ -94,40 +94,54 @@ export const ProductPage = () => {
       <div className="container mx-auto p-4 py-10">
         <div className="flex flex-wrap">
           <div className="w-full p-4 lg:w-1/2">
-            <img src={product.src} alt="Product Image" className="w-full" />
+            <img src={product.src} alt="Product Image" className="w-3/4" />
           </div>
           <div className="w-full p-4 lg:w-1/2">
             <h1 className="mb-4 text-6xl font-medium">{product.name}</h1>
-            <p className="mb-4 text-gray-700 text-xl">{product.description}
-            </p>
-            <div className="top-1 left-5 text-xl font-bold text-black bg-white rounded-full p-2 border border-gray-400">
-              Time left: {timeLeft}
-            </div>
+            <p className="mb-4 text-gray-700 text-xl">{product.description}</p>
+            {product.status === "Inactive" ? (
+              <div className="top-1 left-5 text-xl font-bold text-white bg-red-500 rounded-full p-2 border border-gray-400 inline-block">
+                Inactive
+              </div>
+            ) : (
+              <div className="top-1 left-5 text-xl font-bold text-black bg-white rounded-full p-2 border border-gray-400 inline-block">
+                Time left: {timeLeft}
+              </div>
+            )}
             <p className="mb-4 text-gray-700 text-3xl">
               Current bid: Rs. {bidPrice}
             </p>
 
-            <form className="flex flex-wrap">
-              <div className="w-full pr-4 lg:w-1/2">
-                <input
-                  type="number"
-                  className="mb-4 w-full rounded-md border-transparent bg-gray-100 px-4 py-2 focus:border-gray-500 focus:bg-white focus:ring-0"
-                  placeholder="Enter bid amount"
-                  min="1"
-                  max="999999999999"
-                  ref={bidInputRef}
-                  onChange={(e) => setBid(e.target.valueAsNumber)}
-                />
-              </div>
-              <div className="w-full pl-4 lg:w-1/2">
-                <button
-                  className="rounded-full bg-blue-500 px-4 py-2 font-semibold text-xl text-white hover:bg-blue-600"
-                  onClick={(e) => handleBid(e, bid)}
-                >
-                  Place Bid
+            {user && product.status === "Active" && (
+              <form className="flex flex-wrap mt-10">
+                <div className="w-full pr-4 lg:w-1/2">
+                  <input
+                    type="number"
+                    className="mb-4 w-full rounded-md border-transparent bg-gray-100 px-4 py-2 focus:border-gray-500 focus:bg-white focus:ring-0"
+                    placeholder="Enter bid amount"
+                    min="1"
+                    max="999999999999"
+                    ref={bidInputRef}
+                    onChange={(e) => setBid(e.target.valueAsNumber)}
+                  />
+                </div>
+                <div className="w-full pl-4 lg:w-1/2">
+                  <button
+                    className="rounded-full bg-blue-500 px-4 py-2 font-semibold text-xl text-white hover:bg-blue-600"
+                    onClick={(e) => handleBid(e, bid)}
+                  >
+                    Place Bid
+                  </button>
+                </div>
+              </form>
+            )}
+            {!user && (
+              <Link to="/login" className="w-full mt-10 lg:w-1/2">
+                <button className="rounded-full bg-gray-400 px-4 py-2 font-semibold text-xl text-white hover:bg-gray-600">
+                  Please log in to place a bid!
                 </button>
-              </div>
-            </form>
+              </Link>
+            )}
           </div>
         </div>
       </div>
