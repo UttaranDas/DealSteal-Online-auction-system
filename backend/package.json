@@ -22,6 +22,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.22",
     "react-countdown": "^2.3.5",
-    "socket.io": "^4.6.1"
+    "socket.io": "^4.6.1",
+    "vercel": "^30.2.2"
   }
 }
