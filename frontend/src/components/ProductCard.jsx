@@ -75,7 +75,7 @@ const ProductCard = (props) => {
   }, [timeLeft]);
 
   return (
-    <Link to={`dealsteal/product/${props.id}`}>
+    <Link to={`/product/${props.id}`}>
       <div className="relative overflow-hidden rounded-lg shadow-lg w-100 h-100">
         <div className={`absolute top-1 right-2 text-xl font-bold rounded-full p-2 border border-gray-400 ${statusClass}`}>
           {timeLeft}

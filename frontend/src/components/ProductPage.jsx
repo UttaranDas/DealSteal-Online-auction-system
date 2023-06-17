@@ -7,7 +7,7 @@ import axios from "axios";
 import { AuthContext } from "../AuthContext";
 import { Link } from "react-router-dom";
 
-const socket = io('dealsteal');
+const socket = io();
 
 export const ProductPage = () => {
   const { id } = useParams();
@@ -21,9 +21,11 @@ export const ProductPage = () => {
 
   const bidInputRef = useRef(null);
   useEffect(() => {
+    console.log("called useeffect in product page");
     axios
-      .get(import.meta.env.VITE_LINK + `product/${id}`)
+      .get(`/dealsteal/product/${id}`)
       .then((response) => {
+        console.log("response/useffect/productpage", response);
         setProduct(response.data);
         setBidPrice(response.data.currentBid);
         document.title = response.data.name;

@@ -49,18 +49,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.get("/dealsteal/", async (req, res) => {
-  console.log("accessed");
-  try {
-    // random set of 50 products
-    const products = await Products.aggregate([{ $sample: { size: 50 } }]);
-    res.json(products);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
 app.get("/dealsteal/product/:id", async (req, res) => {
   const id = req.params.id;
   console.log(`accessed product/${id}`);
@@ -174,6 +162,19 @@ app.get("/dealsteal/mybid/:id", async (req, res) => {
     } else {
       res.status(404).json({ error: "User not found" });
     }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+app.get("/dealsteal/", async (req, res) => {
+  console.log("accessed");
+  try {
+    // random set of 50 products
+    const products = await Products.aggregate([{ $sample: { size: 50 } }]);
+    res.json(products);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
