@@ -13,15 +13,13 @@ const ProductCard = (props) => {
       const endTime = props.endTime;
       const now = new Date().getTime();
       const difference = new Date(endTime) - now;
-      
-      // console.log(props.id, props.status, difference, props.name);
 
       if (difference <= 0 && props.status == "Active") {
         // Timer has expired
         setTimeLeft("Inactive");
 
         axios
-          .patch(`dealsteal/product/${props.id}`, {
+          .patch(`https://dealsteal.onrender.com/dealsteal/product/${props.id}`, {
             status: "Inactive",
           })
           .then((response) => {

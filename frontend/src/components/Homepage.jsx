@@ -17,7 +17,8 @@ const Homepage = () => {
     // Fetch data from server when component mounts
     const fetchData = async () => {
       try {
-        const response = await axios.get('dealsteal/');
+        const response = await axios.get('https://dealsteal.onrender.com/dealsteal');
+        
         // Update state with retrieved data
         setProducts(response.data);
         setLoading(false);

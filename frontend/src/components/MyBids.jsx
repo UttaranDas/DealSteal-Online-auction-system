@@ -11,7 +11,7 @@ const MyBids = () => {
 
   useEffect(() => {
     document.title = "My Bids";
-    axios.get(`dealsteal/mybid/${uid}`).then((response) => {
+    axios.get(`https://dealsteal.onrender.com/dealsteal/mybid/${uid}`).then((response) => {
       setBids(response.data);
     })
   }, []);

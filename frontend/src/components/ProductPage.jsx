@@ -23,7 +23,7 @@ export const ProductPage = () => {
   useEffect(() => {
     console.log("called useeffect in product page");
     axios
-      .get(`/dealsteal/product/${id}`)
+      .get(`https://dealsteal.onrender.com/dealsteal/product/${id}`)
       .then((response) => {
         console.log("response/useffect/productpage", response);
         setProduct(response.data);

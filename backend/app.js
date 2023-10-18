@@ -20,13 +20,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.get(/^(?!\/dealsteal).+/, (req, res) => {
-  res.sendFile(path.join(__dirname, '../backend/dist/index.html'));
-});
-
 const PORT = process.env.PORT || 8000;
 
 // Start server
@@ -155,9 +149,6 @@ app.get("/dealsteal/mybid/:id", async (req, res) => {
     if (user) {
       const bidItems = user.bid.map((bid) => bid.item);
       const products = await Products.find({ _id: { $in: bidItems } });
-      // console.log("products",products)
-      // const amount = products.bids.find((e) => bidder==userId);
-      // products["amount"] = amount;
       res.json(products);
     } else {
       res.status(404).json({ error: "User not found" });
